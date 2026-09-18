@@ -182,10 +182,19 @@
   .search-wrap input:focus{ border-color:var(--brass); background:#fff; }
   .patient-list{display:flex; flex-direction:column; gap:10px; margin-top:18px;}
   .patient-card{
-    display:flex; align-items:center; gap:12px; width:100%; text-align:left; font:inherit; color:inherit;
-    background:var(--card); border:1px solid var(--sage-line); border-radius:var(--radius-md);
-    padding:14px 16px; box-shadow:var(--shadow); cursor:pointer;
+    position:relative; background:var(--card); border:1px solid var(--sage-line);
+    border-radius:var(--radius-md); box-shadow:var(--shadow); overflow:hidden;
   }
+  .pc-open{
+    display:flex; align-items:center; gap:12px; width:100%; text-align:left; font:inherit; color:inherit;
+    background:none; border:none; padding:14px 40px 14px 16px; cursor:pointer;
+  }
+  .pc-delete{
+    position:absolute; top:10px; right:10px; width:26px; height:26px; border-radius:50%;
+    border:none; background:var(--sage); color:var(--coral); display:flex; align-items:center;
+    justify-content:center; cursor:pointer;
+  }
+  .pc-delete svg{width:12.5px; height:12.5px;}
   .pc-main{flex:1; min-width:0;}
   .pc-folio{ font-size:10.5px; font-weight:700; letter-spacing:.04em; color:var(--brass); margin:0 0 2px; }
   .pc-name{margin:0; font-family:'Fraunces',serif; font-weight:500; font-size:15.5px; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
@@ -1032,18 +1041,40 @@
     }
     empty.style.display = 'none'; noResults.style.display = 'none';
     list.innerHTML = filtered.map(({p, info}) =>
-      '<button class="patient-card" data-id="' + p.id + '">' +
-        '<div class="pc-main"><p class="pc-folio">' + folioLabel(p.folio) + '</p><p class="pc-name">' + escapeHtml(p.nombre) + '</p>' +
-        '<p class="pc-meta">' + (p.edad ? p.edad + ' años · ' : '') + (p.genero || '—') + ' · ' + timeAgo(p.updatedAt) + '</p>' +
-        (info.viaNote ? '<p class="pc-note-match"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>Coincidencia en nota</p>' : '') +
-        '</div>' +
-        '<span class="pc-badge">' + p.pct + '%</span>' +
-        '<svg class="pc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>' +
-      '</button>'
+      '<div class="patient-card">' +
+        '<button class="pc-open" data-id="' + p.id + '">' +
+          '<div class="pc-main"><p class="pc-folio">' + folioLabel(p.folio) + '</p><p class="pc-name">' + escapeHtml(p.nombre) + '</p>' +
+          '<p class="pc-meta">' + (p.edad ? p.edad + ' años · ' : '') + (p.genero || '—') + ' · ' + timeAgo(p.updatedAt) + '</p>' +
+          (info.viaNote ? '<p class="pc-note-match"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>Coincidencia en nota</p>' : '') +
+          '</div>' +
+          '<span class="pc-badge">' + p.pct + '%</span>' +
+          '<svg class="pc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>' +
+        '</button>' +
+        '<button class="pc-delete" data-id="' + p.id + '" aria-label="Eliminar paciente">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>' +
+        '</button>' +
+      '</div>'
     ).join('');
-    list.querySelectorAll('.patient-card').forEach(btn => {
+    list.querySelectorAll('.pc-open').forEach(btn => {
       btn.addEventListener('click', () => openPatient(btn.dataset.id));
     });
+    list.querySelectorAll('.pc-delete').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        deletePatient(btn.dataset.id);
+      });
+    });
+  }
+
+  function deletePatient(id){
+    const p = patients.find(x => x.id === id);
+    if (!p) return;
+    if (!confirm('¿Eliminar el expediente de ' + p.nombre + '? Esta acción no se puede deshacer.')) return;
+    patients = patients.filter(x => x.id !== id);
+    if (currentId === id) currentId = null;
+    renderList();
+    if (DB) DB.remove(id).catch(() => showSync('No se pudo borrar en la nube', 2600));
+    else showSync('Eliminado', 1200);
   }
   document.getElementById('searchInput').addEventListener('input', (e) => {
     searchQuery = e.target.value;
