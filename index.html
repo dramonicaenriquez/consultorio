@@ -152,7 +152,7 @@
   }
   .icon-btn svg{width:18px; height:18px;}
 
-  .ring-wrap{position:relative; width:60px; height:60px; flex:0 0 auto;}
+  .ring-wrap{display:none !important; position:relative; width:60px; height:60px; flex:0 0 auto;}
   .ring-wrap svg.ring-svg{width:60px; height:60px; transform:rotate(-90deg);}
   .ring-bg{fill:none; stroke:rgba(251,248,242,.16); stroke-width:4;}
   .ring-fg{fill:none; stroke:var(--brass-light); stroke-width:4; stroke-linecap:round;
@@ -286,8 +286,22 @@
   .notas-list{ display:flex; flex-direction:column; gap:10px; margin-top:16px; }
   .nota-item{ background:var(--sage); border-radius:var(--radius-sm); padding:12px 14px; position:relative; }
   .nota-item .nota-fecha{ font-size:11px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--teal-soft); margin:0 0 4px; }
-  .nota-item .nota-texto{ font-size:13.5px; color:var(--ink); margin:0; white-space:pre-wrap; line-height:1.5; padding-right:26px; }
-  .nota-item .nota-del{ position:absolute; top:10px; right:10px; border:none; background:none; color:var(--coral); font-size:12px; font-weight:700; cursor:pointer; padding:2px 4px; }
+  .nota-item .nota-texto{ font-size:13.5px; color:var(--ink); margin:0; white-space:pre-wrap; line-height:1.5; }
+  .nota-editada{ text-transform:none; letter-spacing:0; font-weight:600; color:var(--ink-faint); }
+  .nota-actions{ display:flex; justify-content:flex-end; gap:6px; margin-top:8px; }
+  .nota-actions button, .nota-edit-actions button{
+    border:none; border-radius:99px; font-family:'Inter',sans-serif; font-size:12px; font-weight:700;
+    padding:6px 12px; cursor:pointer; background:#fff; border:1px solid var(--sage-line);
+  }
+  .nota-edit{ color:var(--teal-mid); }
+  .nota-del{ color:var(--coral); }
+  .nota-edit-area{
+    width:100%; min-height:84px; font-family:'Inter',sans-serif; font-size:14px; line-height:1.5; color:var(--ink);
+    background:#fff; border:1px solid var(--brass); border-radius:var(--radius-sm); padding:10px 12px; resize:vertical;
+  }
+  .nota-edit-actions{ display:flex; justify-content:flex-end; gap:6px; margin-top:8px; }
+  .nota-edit-actions .nota-save{ background:var(--teal-deep); color:#fff; border-color:var(--teal-deep); }
+  .nota-edit-actions .nota-cancel{ color:var(--ink-soft); }
   .notas-empty{ text-align:center; font-size:12.5px; color:var(--ink-faint); padding:10px 0 2px; }
 
   .footer-note{ text-align:center; font-size:11.5px; color:var(--ink-faint); margin:22px 4px 4px; line-height:1.5; }
@@ -464,6 +478,7 @@
       </summary>
       <div class="card-body">
         <div class="field"><label>Nombre completo<span class="req">*</span></label><input type="text" id="fNombre" class="field-track" placeholder="Nombre del paciente" autocomplete="off"></div>
+        <div class="field"><label>Enviado por</label><input type="text" id="fEnviadoPor" class="field-track" placeholder="Médico o institución que lo refiere" autocomplete="off"></div>
         <div class="row2">
           <div class="field"><label>Fecha</label><input type="date" id="fFecha" class="field-track"></div>
           <div class="field"><label>Teléfono</label><input type="tel" id="fTelefono" class="field-track" placeholder="10 dígitos" autocomplete="off"></div>
@@ -522,6 +537,21 @@
         <div class="switch-row"><span class="lbl">Hipertensión</span><label class="switch"><input type="checkbox" id="tHTA" class="field-track"><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-text" id="tHTATxt">No</span></label></div>
         <div class="divider"></div>
         <div class="switch-row"><span class="lbl">Cardiopatías</span><label class="switch"><input type="checkbox" id="tCard" class="field-track"><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-text" id="tCardTxt">No</span></label></div>
+        <div class="divider"></div>
+        <div class="switch-row"><span class="lbl">Alergias</span><label class="switch"><input type="checkbox" id="tAlerg" class="field-track" data-reveals="rAlerg"><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-text" id="tAlergTxt">No</span></label></div>
+        <div class="reveal" id="rAlerg"><div class="field"><label>¿A qué medicamento?</label><input type="text" id="fAlergDet" placeholder="Ej. penicilina"></div></div>
+        <div class="divider"></div>
+        <div class="switch-row"><span class="lbl">Cirugías previas</span><label class="switch"><input type="checkbox" id="tCirug" class="field-track" data-reveals="rCirug"><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-text" id="tCirugTxt">No</span></label></div>
+        <div class="reveal" id="rCirug"><div class="field"><label>¿Cuáles?</label><input type="text" id="fCirugDet" placeholder="Ej. apendicectomía 2015"></div></div>
+        <div class="divider"></div>
+        <div class="switch-row"><span class="lbl">Transfusiones</span><label class="switch"><input type="checkbox" id="tTransf" class="field-track" data-reveals="rTransf"><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-text" id="tTransfTxt">No</span></label></div>
+        <div class="reveal" id="rTransf"><div class="field"><label>¿Hubo reacción?</label><input type="text" id="fTransfDet" placeholder="Ej. sin reacción / reacción febril"></div></div>
+        <div class="divider"></div>
+        <div class="switch-row"><span class="lbl">Fracturas</span><label class="switch"><input type="checkbox" id="tFract" class="field-track" data-reveals="rFract"><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-text" id="tFractTxt">No</span></label></div>
+        <div class="reveal" id="rFract"><div class="field"><label>¿Cuál?</label><input type="text" id="fFractDet" placeholder="Ej. radio derecho 2019"></div></div>
+        <div class="divider"></div>
+        <div class="switch-row"><span class="lbl">Internamientos</span><label class="switch"><input type="checkbox" id="tIntern" class="field-track" data-reveals="rIntern"><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-text" id="tInternTxt">No</span></label></div>
+        <div class="reveal" id="rIntern"><div class="field"><label>Causa</label><input type="text" id="fInternDet" placeholder="Ej. neumonía 2022"></div></div>
         <div class="field"><label>Otro</label><input type="text" id="fAppOtro" placeholder="Otro antecedente patológico"></div>
       </div>
     </details>
@@ -552,7 +582,15 @@
     <details class="card" id="secPA">
       <summary><span class="num">VI</span><div class="title-block"><p class="eyebrow">PA</p><h2>Padecimiento actual</h2></div>
         <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
-      <div class="card-body"><div class="field"><label>Descripción libre</label><textarea id="fPA" class="field-track" placeholder="Evolución, inicio, síntomas, tiempo de evolución…"></textarea></div></div>
+      <div class="card-body">
+        <div class="switch-row"><span class="lbl">Fiebre</span><label class="switch"><input type="checkbox" id="tFiebre" class="field-track" data-reveals="rFiebre"><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-text" id="tFiebreTxt">No</span></label></div>
+        <div class="reveal" id="rFiebre"><div class="field"><label>¿Cuánto?</label><input type="text" id="fFiebreDet" placeholder="Ej. 38.5 °C"></div></div>
+        <div class="divider"></div>
+        <div class="switch-row"><span class="lbl">Pérdida de peso</span><label class="switch"><input type="checkbox" id="tPeso" class="field-track" data-reveals="rPeso"><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-text" id="tPesoTxt">No</span></label></div>
+        <div class="reveal" id="rPeso"><div class="field"><label>¿Cuántos kilos?</label><input type="text" id="fPesoDet" placeholder="Ej. 5 kg en 3 meses"></div></div>
+        <div class="field"><label>Subjetivo</label><textarea id="fPA" class="field-track" placeholder="Lo que refiere el paciente…"></textarea></div>
+        <div class="field"><label>Objetivo</label><textarea id="fPAObj" class="field-track" placeholder="Lo que encuentro…"></textarea></div>
+      </div>
     </details>
 
     <details class="card" id="secEF">
@@ -733,8 +771,14 @@
     // Resuelve con la DB si ya hay sesión activa (recarga de página), o null si no.
     whenReady(){
       return new Promise((resolve) => {
-        const unsub = onAuthStateChanged(auth, (user) => {
+        const unsub = onAuthStateChanged(auth, async (user) => {
           unsub();
+          // Una sesión anónima de la versión anterior ya no sirve: se cierra y se pide login.
+          if (user && user.isAnonymous) {
+            try { await signOut(auth); } catch (e) {}
+            resolve(null);
+            return;
+          }
           resolve(user ? makeDB() : null);
         });
       });
@@ -756,8 +800,8 @@
   let saveTimer = null;
   const syncPill = document.getElementById('syncPill');
 
-  const TEXTLIKE_IDS = ['fNombre','fFecha','fTelefono','fFechaNacimiento','fEdad','fGenero','fEdoCivil','fReligion','fNeoDet','fTabDet','fAlcDet','fDroDet','fAppOtro','fMenarca','fG','fP','fC','fA','fFUM','fHormTiempo','fMasto','fPap','fPA','fSignosVitales','fEF','fEstudiosDesc','fDx','fPlan','fPronoCal','fPronoNotas'];
-  const SWITCH_MAP = [['tNeo','rNeo'],['tTab','rTab'],['tAlc','rAlc'],['tDro','rDro'],['tDM',null],['tHTA',null],['tCard',null],['tHorm','rHorm'],['tLact',null]];
+  const TEXTLIKE_IDS = ['fNombre','fEnviadoPor','fFecha','fTelefono','fFechaNacimiento','fEdad','fGenero','fEdoCivil','fReligion','fNeoDet','fTabDet','fAlcDet','fDroDet','fAppOtro','fAlergDet','fCirugDet','fTransfDet','fFractDet','fInternDet','fFiebreDet','fPesoDet','fPAObj','fMenarca','fG','fP','fC','fA','fFUM','fHormTiempo','fMasto','fPap','fPA','fSignosVitales','fEF','fEstudiosDesc','fDx','fPlan','fPronoCal','fPronoNotas'];
+  const SWITCH_MAP = [['tNeo','rNeo'],['tTab','rTab'],['tAlc','rAlc'],['tDro','rDro'],['tDM',null],['tHTA',null],['tCard',null],['tHorm','rHorm'],['tLact',null],['tAlerg','rAlerg'],['tCirug','rCirug'],['tTransf','rTransf'],['tFract','rFract'],['tIntern','rIntern'],['tFiebre','rFiebre'],['tPeso','rPeso']];
 
   const genero = document.getElementById('fGenero');
   const secAGO = document.getElementById('secAGO');
@@ -952,6 +996,7 @@
     (data.files || []).forEach(f => attachedFiles.push(f));
     renderFiles();
     currentNotas = (data.notas || []).slice();
+    editingNotaId = null;
     renderNotas();
     secAGO.style.display = document.getElementById('fGenero').value === 'Femenino' ? '' : 'none';
     updateChip();
@@ -970,25 +1015,64 @@
   }
 
   /* ---------- Notas de seguimiento ---------- */
+  let editingNotaId = null;
+  function fmtNotaFecha(iso){
+    const d = new Date(iso);
+    return d.toLocaleDateString('es-MX', {day:'2-digit', month:'short', year:'numeric'}) + ' · ' + d.toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'});
+  }
   function renderNotas(){
     const box = document.getElementById('notasList');
     if (!currentNotas.length){ box.innerHTML = '<p class="notas-empty">Aún no hay notas de seguimiento.</p>'; return; }
     const ordered = currentNotas.slice().sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
-    box.innerHTML = ordered.map(n =>
-      '<div class="nota-item" data-nid="' + n.id + '">' +
-        '<p class="nota-fecha">' + new Date(n.fecha).toLocaleDateString('es-MX', {day:'2-digit', month:'short', year:'numeric'}) + ' · ' + new Date(n.fecha).toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'}) + '</p>' +
+    box.innerHTML = ordered.map(n => {
+      const editado = n.editada ? ' <span class="nota-editada">· editada</span>' : '';
+      if (editingNotaId === n.id){
+        return '<div class="nota-item editing" data-nid="' + n.id + '">' +
+          '<p class="nota-fecha">' + fmtNotaFecha(n.fecha) + '</p>' +
+          '<textarea class="nota-edit-area" data-nid="' + n.id + '">' + escapeHtml(n.texto) + '</textarea>' +
+          '<div class="nota-edit-actions">' +
+            '<button type="button" class="nota-cancel">Cancelar</button>' +
+            '<button type="button" class="nota-save" data-nid="' + n.id + '">Guardar cambios</button>' +
+          '</div>' +
+        '</div>';
+      }
+      return '<div class="nota-item" data-nid="' + n.id + '">' +
+        '<p class="nota-fecha">' + fmtNotaFecha(n.fecha) + editado + '</p>' +
         '<p class="nota-texto">' + escapeHtml(n.texto) + '</p>' +
-        '<button type="button" class="nota-del" data-nid="' + n.id + '">Quitar</button>' +
-      '</div>'
-    ).join('');
-    box.querySelectorAll('.nota-del').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const nid = Number(e.target.dataset.nid);
-        currentNotas = currentNotas.filter(n => n.id !== nid);
-        renderNotas();
-        saveCurrent(true);
-      });
-    });
+        '<div class="nota-actions">' +
+          '<button type="button" class="nota-edit" data-nid="' + n.id + '">Editar</button>' +
+          '<button type="button" class="nota-del" data-nid="' + n.id + '">Quitar</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+
+    box.querySelectorAll('.nota-edit').forEach(btn => btn.addEventListener('click', () => {
+      editingNotaId = Number(btn.dataset.nid);
+      renderNotas();
+      const ta = box.querySelector('.nota-edit-area');
+      if (ta){ ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }
+    }));
+    box.querySelectorAll('.nota-cancel').forEach(btn => btn.addEventListener('click', () => {
+      editingNotaId = null; renderNotas();
+    }));
+    box.querySelectorAll('.nota-save').forEach(btn => btn.addEventListener('click', () => {
+      const nid = Number(btn.dataset.nid);
+      const ta = box.querySelector('.nota-edit-area');
+      const texto = ta.value.trim();
+      if (!texto) return;
+      const n = currentNotas.find(x => x.id === nid);
+      if (n && n.texto !== texto){ n.texto = texto; n.editada = new Date().toISOString(); }
+      editingNotaId = null;
+      renderNotas();
+      saveCurrent(true);
+    }));
+    box.querySelectorAll('.nota-del').forEach(btn => btn.addEventListener('click', () => {
+      if (!confirm('¿Quitar esta nota?')) return;
+      const nid = Number(btn.dataset.nid);
+      currentNotas = currentNotas.filter(n => n.id !== nid);
+      renderNotas();
+      saveCurrent(true);
+    }));
   }
   document.getElementById('btnAddNota').addEventListener('click', () => {
     const box = document.getElementById('notaNueva');
@@ -1099,7 +1183,6 @@
           '<p class="pc-meta">' + (p.edad ? p.edad + ' años · ' : '') + (p.genero || '—') + ' · ' + timeAgo(p.updatedAt) + '</p>' +
           (info.viaNote ? '<p class="pc-note-match"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>Coincidencia en nota</p>' : '') +
           '</div>' +
-          '<span class="pc-badge">' + p.pct + '%</span>' +
           '<svg class="pc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>' +
         '</button>' +
         '<button class="pc-delete" data-id="' + p.id + '" aria-label="Eliminar paciente">' +
@@ -1188,10 +1271,12 @@
   const summaryText = document.getElementById('summaryText');
   function val(id){ return document.getElementById(id).value.trim(); }
   function yn(id){ return document.getElementById(id).checked ? 'Sí' : 'No'; }
+  function ynd(id, det){ const on = document.getElementById(id).checked; return on ? ('Sí' + (val(det) ? ' — ' + val(det) : '')) : 'No'; }
   function buildSummary(){
     const L = [];
     L.push('I · FICHA DE IDENTIFICACIÓN');
     L.push('Nombre: ' + (val('fNombre') || '—'));
+    if (val('fEnviadoPor')) L.push('Enviado por: ' + val('fEnviadoPor'));
     L.push('Fecha: ' + (val('fFecha') || '—') + '   Teléfono: ' + (val('fTelefono') || '—'));
     L.push('Fecha de nacimiento: ' + (val('fFechaNacimiento') || '—'));
     L.push('Edad: ' + (val('fEdad') || '—') + '   Género: ' + (val('fGenero') || '—'));
@@ -1204,6 +1289,11 @@
     L.push('Drogas: ' + yn('tDro') + (document.getElementById('tDro').checked && val('fDroDet') ? ' — ' + val('fDroDet') : '')); L.push('');
     L.push('IV · APP');
     L.push('Diabetes: ' + yn('tDM') + '   Hipertensión: ' + yn('tHTA') + '   Cardiopatías: ' + yn('tCard'));
+    L.push('Alergias: ' + ynd('tAlerg','fAlergDet'));
+    L.push('Cirugías: ' + ynd('tCirug','fCirugDet'));
+    L.push('Transfusiones: ' + ynd('tTransf','fTransfDet'));
+    L.push('Fracturas: ' + ynd('tFract','fFractDet'));
+    L.push('Internamientos: ' + ynd('tIntern','fInternDet'));
     if (val('fAppOtro')) L.push('Otro: ' + val('fAppOtro'));
     if (genero.value === 'Femenino'){
       L.push(''); L.push('V · AGO');
@@ -1213,7 +1303,10 @@
       L.push('Mastografía: ' + (val('fMasto') || '—') + '   PAP: ' + (val('fPap') || '—'));
       L.push('Lactancia: ' + yn('tLact'));
     }
-    L.push(''); L.push('VI · PADECIMIENTO ACTUAL'); L.push(val('fPA') || '—');
+    L.push(''); L.push('VI · PADECIMIENTO ACTUAL');
+    L.push('Fiebre: ' + ynd('tFiebre','fFiebreDet') + '   Pérdida de peso: ' + ynd('tPeso','fPesoDet'));
+    L.push('Subjetivo: ' + (val('fPA') || '—'));
+    L.push('Objetivo: ' + (val('fPAObj') || '—'));
     L.push(''); L.push('VII · EXPLORACIÓN FÍSICA');
     L.push('Signos vitales: ' + (val('fSignosVitales') || '—'));
     L.push(val('fEF') || '—');
@@ -1253,6 +1346,7 @@
         '</div>' +
         '<div class="print-meta-block">' +
           '<p class="print-meta-line print-meta-name">' + escapeHtml(val('fNombre') || 'Paciente sin nombre') + '</p>' +
+          (val('fEnviadoPor') ? '<p class="print-meta-line">Enviado por: ' + escapeHtml(val('fEnviadoPor')) + '</p>' : '') +
           '<p class="print-meta-line">Fecha de nacimiento: ' + escapeHtml(fechaNac) + '</p>' +
           '<p class="print-meta-line">Tel\u00e9fono: ' + escapeHtml(tel) + '</p>' +
         '</div>' +
