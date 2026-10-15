@@ -472,7 +472,6 @@
 
     <details class="card" open>
       <summary>
-        <span class="num">I</span>
         <div class="title-block"><p class="eyebrow">Ficha de identificación</p><h2>Datos generales</h2></div>
         <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </summary>
@@ -500,7 +499,7 @@
     </details>
 
     <details class="card">
-      <summary><span class="num">II</span><div class="title-block"><p class="eyebrow">AHF</p><h2>Antecedentes heredofamiliares</h2></div>
+      <summary><div class="title-block"><p class="eyebrow">AHF</p><h2>Antecedentes heredofamiliares</h2></div>
         <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
       <div class="card-body">
         <div class="switch-row"><span class="lbl">Neoplásicos</span>
@@ -511,7 +510,7 @@
     </details>
 
     <details class="card">
-      <summary><span class="num">III</span><div class="title-block"><p class="eyebrow">APNP</p><h2>Antecedentes personales no patológicos</h2></div>
+      <summary><div class="title-block"><p class="eyebrow">APNP</p><h2>Antecedentes personales no patológicos</h2></div>
         <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
       <div class="card-body">
         <div class="switch-row"><span class="lbl">Tabaquismo</span>
@@ -525,11 +524,15 @@
         <div class="switch-row"><span class="lbl">Drogas</span>
           <label class="switch"><input type="checkbox" id="tDro" class="field-track" data-reveals="rDro"><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-text" id="tDroTxt">No</span></label></div>
         <div class="reveal" id="rDro"><div class="field"><label>Detalle</label><input type="text" id="fDroDet" placeholder="Sustancia, frecuencia"></div></div>
+        <div class="divider"></div>
+        <div class="switch-row"><span class="lbl">Exposición a humo de leña</span>
+          <label class="switch"><input type="checkbox" id="tLena" class="field-track" data-reveals="rLena"><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-text" id="tLenaTxt">No</span></label></div>
+        <div class="reveal" id="rLena"><div class="field"><label>Detalle</label><input type="text" id="fLenaDet" placeholder="Tiempo de exposición, horas al día"></div></div>
       </div>
     </details>
 
     <details class="card">
-      <summary><span class="num">IV</span><div class="title-block"><p class="eyebrow">APP</p><h2>Antecedentes personales patológicos</h2></div>
+      <summary><div class="title-block"><p class="eyebrow">APP</p><h2>Antecedentes personales patológicos</h2></div>
         <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
       <div class="card-body">
         <div class="switch-row"><span class="lbl">Diabetes</span><label class="switch"><input type="checkbox" id="tDM" class="field-track"><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-text" id="tDMTxt">No</span></label></div>
@@ -557,7 +560,7 @@
     </details>
 
     <details class="card" id="secAGO" style="display:none;">
-      <summary><span class="num">V</span><div class="title-block"><p class="eyebrow">AGO</p><h2>Antecedentes gineco-obstétricos</h2></div>
+      <summary><div class="title-block"><p class="eyebrow">AGO</p><h2>Antecedentes gineco-obstétricos</h2></div>
         <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
       <div class="card-body">
         <div class="field"><label>Menarca (edad de 1ª menstruación)</label><input type="number" id="fMenarca" class="field-track" placeholder="años"></div>
@@ -571,16 +574,24 @@
         <div class="switch-row"><span class="lbl">Uso de hormonales</span>
           <label class="switch"><input type="checkbox" id="tHorm" class="field-track" data-reveals="rHorm"><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-text" id="tHormTxt">No</span></label></div>
         <div class="reveal" id="rHorm"><div class="field"><label>Tiempo de uso</label><input type="text" id="fHormTiempo" placeholder="Ej. 3 años"></div></div>
-        <div class="row2">
-          <div class="field"><label>Mastografía (fecha)</label><input type="date" id="fMasto" class="field-track"></div>
-          <div class="field"><label>PAP (fecha)</label><input type="date" id="fPap" class="field-track"></div>
+        <div class="field"><label>Mastografía</label>
+          <div class="row2">
+            <select id="fMastoEstado" class="field-track estado-select" data-date="fMasto"><option value="">Fecha</option><option>No se ha realizado</option><option>No recuerda</option></select>
+            <input type="date" id="fMasto" class="field-track">
+          </div>
+        </div>
+        <div class="field"><label>Papanicolaou (PAP)</label>
+          <div class="row2">
+            <select id="fPapEstado" class="field-track estado-select" data-date="fPap"><option value="">Fecha</option><option>No se ha realizado</option><option>No recuerda</option></select>
+            <input type="date" id="fPap" class="field-track">
+          </div>
         </div>
         <div class="switch-row"><span class="lbl">Lactancia</span><label class="switch"><input type="checkbox" id="tLact" class="field-track"><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-text" id="tLactTxt">No</span></label></div>
       </div>
     </details>
 
     <details class="card" id="secPA">
-      <summary><span class="num">VI</span><div class="title-block"><p class="eyebrow">PA</p><h2>Padecimiento actual</h2></div>
+      <summary><div class="title-block"><p class="eyebrow">PA</p><h2>Padecimiento actual</h2></div>
         <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
       <div class="card-body">
         <div class="switch-row"><span class="lbl">Fiebre</span><label class="switch"><input type="checkbox" id="tFiebre" class="field-track" data-reveals="rFiebre"><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-text" id="tFiebreTxt">No</span></label></div>
@@ -594,7 +605,7 @@
     </details>
 
     <details class="card" id="secEF">
-      <summary><span class="num">VII</span><div class="title-block"><p class="eyebrow">EF</p><h2>Exploración física</h2></div>
+      <summary><div class="title-block"><p class="eyebrow">EF</p><h2>Exploración física</h2></div>
         <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
       <div class="card-body">
         <div class="field"><label>Signos vitales</label><input type="text" id="fSignosVitales" class="field-track" placeholder="TA, FC, FR, Temp., SatO2…"></div>
@@ -603,33 +614,27 @@
     </details>
 
     <details class="card" id="secEstudios">
-      <summary><span class="num">VIII</span><div class="title-block"><p class="eyebrow">Imagen y laboratorio</p><h2>Estudios</h2></div>
+      <summary><div class="title-block"><p class="eyebrow">Imagen y laboratorio</p><h2>Estudios</h2></div>
         <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
       <div class="card-body">
-        <div class="dropzone" id="dropzone">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 16V4M12 4l-4 4M12 4l4 4"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>
-          <p>Adjuntar estudio</p><span>Se registra el nombre del archivo, no el archivo</span>
-        </div>
-        <input type="file" id="fileInput" multiple accept="image/*,.pdf" style="display:none">
-        <div class="file-list" id="fileList"></div>
         <div class="field"><label>Descripción del estudio</label><textarea id="fEstudiosDesc" class="field-track" placeholder="Hallazgos radiológicos, resultados de laboratorio, impresión del estudio…"></textarea></div>
       </div>
     </details>
 
     <details class="card">
-      <summary><span class="num">IX</span><div class="title-block"><p class="eyebrow">Diagnóstico</p><h2>Impresión diagnóstica</h2></div>
+      <summary><div class="title-block"><p class="eyebrow">Diagnóstico</p><h2>Impresión diagnóstica</h2></div>
         <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
       <div class="card-body"><div class="field"><textarea id="fDx" class="field-track" placeholder="Diagnóstico(s) presuntivo(s) o confirmado(s)…"></textarea></div></div>
     </details>
 
     <details class="card">
-      <summary><span class="num">X</span><div class="title-block"><p class="eyebrow">Conducta</p><h2>Plan de tratamiento</h2></div>
+      <summary><div class="title-block"><p class="eyebrow">Conducta</p><h2>Plan de tratamiento</h2></div>
         <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
       <div class="card-body"><div class="field"><textarea id="fPlan" class="field-track" placeholder="Procedimiento propuesto, abordaje, indicaciones…"></textarea></div></div>
     </details>
 
     <details class="card">
-      <summary><span class="num">XI</span><div class="title-block"><p class="eyebrow">Cierre</p><h2>Pronóstico</h2></div>
+      <summary><div class="title-block"><p class="eyebrow">Cierre</p><h2>Pronóstico</h2></div>
         <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
       <div class="card-body">
         <div class="field"><label>Calificación</label><select id="fPronoCal" class="field-track"><option value="">Seleccionar</option><option>Bueno</option><option>Reservado</option><option>Malo</option></select></div>
@@ -638,7 +643,7 @@
     </details>
 
     <details class="card" open>
-      <summary><span class="num">XII</span><div class="title-block"><p class="eyebrow">Consultas subsecuentes</p><h2>Notas de seguimiento</h2></div>
+      <summary><div class="title-block"><p class="eyebrow">Consultas subsecuentes</p><h2>Notas de seguimiento</h2></div>
         <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
       <div class="card-body">
         <div class="field">
@@ -661,7 +666,7 @@
   </button>
   <p class="save-hint">Puedes cerrar y continuar este expediente cuando quieras.</p>
 
-  <p class="footer-note">Se guarda automáticamente en la nube.<br>Los archivos adjuntos se registran <b>solo por nombre</b>.</p>
+  <p class="footer-note">Se guarda automáticamente en la nube.</p>
 </div>
 </div>
 
@@ -800,8 +805,8 @@
   let saveTimer = null;
   const syncPill = document.getElementById('syncPill');
 
-  const TEXTLIKE_IDS = ['fNombre','fEnviadoPor','fFecha','fTelefono','fFechaNacimiento','fEdad','fGenero','fEdoCivil','fReligion','fNeoDet','fTabDet','fAlcDet','fDroDet','fAppOtro','fAlergDet','fCirugDet','fTransfDet','fFractDet','fInternDet','fFiebreDet','fPesoDet','fPAObj','fMenarca','fG','fP','fC','fA','fFUM','fHormTiempo','fMasto','fPap','fPA','fSignosVitales','fEF','fEstudiosDesc','fDx','fPlan','fPronoCal','fPronoNotas'];
-  const SWITCH_MAP = [['tNeo','rNeo'],['tTab','rTab'],['tAlc','rAlc'],['tDro','rDro'],['tDM',null],['tHTA',null],['tCard',null],['tHorm','rHorm'],['tLact',null],['tAlerg','rAlerg'],['tCirug','rCirug'],['tTransf','rTransf'],['tFract','rFract'],['tIntern','rIntern'],['tFiebre','rFiebre'],['tPeso','rPeso']];
+  const TEXTLIKE_IDS = ['fNombre','fEnviadoPor','fFecha','fTelefono','fFechaNacimiento','fEdad','fGenero','fEdoCivil','fReligion','fNeoDet','fTabDet','fAlcDet','fDroDet','fLenaDet','fMastoEstado','fPapEstado','fAppOtro','fAlergDet','fCirugDet','fTransfDet','fFractDet','fInternDet','fFiebreDet','fPesoDet','fPAObj','fMenarca','fG','fP','fC','fA','fFUM','fHormTiempo','fMasto','fPap','fPA','fSignosVitales','fEF','fEstudiosDesc','fDx','fPlan','fPronoCal','fPronoNotas'];
+  const SWITCH_MAP = [['tNeo','rNeo'],['tTab','rTab'],['tAlc','rAlc'],['tDro','rDro'],['tLena','rLena'],['tDM',null],['tHTA',null],['tCard',null],['tHorm','rHorm'],['tLact',null],['tAlerg','rAlerg'],['tCirug','rCirug'],['tTransf','rTransf'],['tFract','rFract'],['tIntern','rIntern'],['tFiebre','rFiebre'],['tPeso','rPeso']];
 
   const genero = document.getElementById('fGenero');
   const secAGO = document.getElementById('secAGO');
@@ -948,28 +953,7 @@
   });
 
   /* ---------- Estudios ---------- */
-  const dropzone = document.getElementById('dropzone');
-  const fileInput = document.getElementById('fileInput');
-  const fileList = document.getElementById('fileList');
-  dropzone.addEventListener('click', () => fileInput.click());
-  fileInput.addEventListener('change', () => {
-    Array.from(fileInput.files).forEach(f => attachedFiles.push(f));
-    renderFiles(); updateProgress(); fileInput.value = '';
-  });
-  function renderFiles(){
-    fileList.innerHTML = '';
-    attachedFiles.forEach((f, i) => {
-      const row = document.createElement('div');
-      row.className = 'file-item';
-      row.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>' +
-        '<span class="fname">' + f.name + '</span><button type="button" data-i="' + i + '">Quitar</button>';
-      row.querySelector('button').addEventListener('click', (e) => {
-        attachedFiles.splice(Number(e.target.dataset.i), 1);
-        renderFiles(); updateProgress();
-      });
-      fileList.appendChild(row);
-    });
-  }
+  function renderFiles(){}
 
   /* ---------- Serialización de paciente ---------- */
   function collectFormData(){
@@ -999,8 +983,17 @@
     editingNotaId = null;
     renderNotas();
     secAGO.style.display = document.getElementById('fGenero').value === 'Femenino' ? '' : 'none';
+    syncEstados();
     updateChip();
   }
+  function syncEstados(){
+    document.querySelectorAll('.estado-select').forEach(sel => {
+      const d = document.getElementById(sel.dataset.date);
+      d.style.display = sel.value ? 'none' : '';
+    });
+  }
+  document.querySelectorAll('.estado-select').forEach(sel => sel.addEventListener('change', syncEstados));
+
   function clearForm(){
     TEXTLIKE_IDS.forEach(id => document.getElementById(id).value = '');
     SWITCH_MAP.forEach(([id, revealId]) => {
@@ -1011,6 +1004,7 @@
     attachedFiles.length = 0; renderFiles();
     currentNotas = []; renderNotas();
     secAGO.style.display = 'none';
+    syncEstados();
     updateChip(); updateProgress();
   }
 
@@ -1274,20 +1268,21 @@
   function ynd(id, det){ const on = document.getElementById(id).checked; return on ? ('Sí' + (val(det) ? ' — ' + val(det) : '')) : 'No'; }
   function buildSummary(){
     const L = [];
-    L.push('I · FICHA DE IDENTIFICACIÓN');
+    L.push('FICHA DE IDENTIFICACIÓN');
     L.push('Nombre: ' + (val('fNombre') || '—'));
     if (val('fEnviadoPor')) L.push('Enviado por: ' + val('fEnviadoPor'));
     L.push('Fecha: ' + (val('fFecha') || '—') + '   Teléfono: ' + (val('fTelefono') || '—'));
     L.push('Fecha de nacimiento: ' + (val('fFechaNacimiento') || '—'));
     L.push('Edad: ' + (val('fEdad') || '—') + '   Género: ' + (val('fGenero') || '—'));
     L.push('Estado civil: ' + (val('fEdoCivil') || '—') + '   Religión: ' + (val('fReligion') || '—')); L.push('');
-    L.push('II · AHF');
+    L.push('AHF');
     L.push('Neoplásicos: ' + yn('tNeo') + (document.getElementById('tNeo').checked && val('fNeoDet') ? ' — ' + val('fNeoDet') : '')); L.push('');
-    L.push('III · APNP');
+    L.push('APNP');
     L.push('Tabaquismo: ' + yn('tTab') + (document.getElementById('tTab').checked && val('fTabDet') ? ' — ' + val('fTabDet') : ''));
     L.push('Alcoholismo: ' + yn('tAlc') + (document.getElementById('tAlc').checked && val('fAlcDet') ? ' — ' + val('fAlcDet') : ''));
-    L.push('Drogas: ' + yn('tDro') + (document.getElementById('tDro').checked && val('fDroDet') ? ' — ' + val('fDroDet') : '')); L.push('');
-    L.push('IV · APP');
+    L.push('Drogas: ' + yn('tDro') + (document.getElementById('tDro').checked && val('fDroDet') ? ' — ' + val('fDroDet') : ''));
+    L.push('Exposición a humo de leña: ' + ynd('tLena','fLenaDet')); L.push('');
+    L.push('APP');
     L.push('Diabetes: ' + yn('tDM') + '   Hipertensión: ' + yn('tHTA') + '   Cardiopatías: ' + yn('tCard'));
     L.push('Alergias: ' + ynd('tAlerg','fAlergDet'));
     L.push('Cirugías: ' + ynd('tCirug','fCirugDet'));
@@ -1296,29 +1291,28 @@
     L.push('Internamientos: ' + ynd('tIntern','fInternDet'));
     if (val('fAppOtro')) L.push('Otro: ' + val('fAppOtro'));
     if (genero.value === 'Femenino'){
-      L.push(''); L.push('V · AGO');
+      L.push(''); L.push('AGO');
       L.push('Menarca: ' + (val('fMenarca') || '—') + '   G:' + (val('fG')||'0') + ' P:' + (val('fP')||'0') + ' C:' + (val('fC')||'0') + ' A:' + (val('fA')||'0'));
       L.push('FUM: ' + (val('fFUM') || '—'));
       L.push('Hormonales: ' + yn('tHorm') + (document.getElementById('tHorm').checked && val('fHormTiempo') ? ' — ' + val('fHormTiempo') : ''));
-      L.push('Mastografía: ' + (val('fMasto') || '—') + '   PAP: ' + (val('fPap') || '—'));
+      L.push('Mastografía: ' + (val('fMastoEstado') || val('fMasto') || '—') + '   PAP: ' + (val('fPapEstado') || val('fPap') || '—'));
       L.push('Lactancia: ' + yn('tLact'));
     }
-    L.push(''); L.push('VI · PADECIMIENTO ACTUAL');
+    L.push(''); L.push('PADECIMIENTO ACTUAL');
     L.push('Fiebre: ' + ynd('tFiebre','fFiebreDet') + '   Pérdida de peso: ' + ynd('tPeso','fPesoDet'));
     L.push('Subjetivo: ' + (val('fPA') || '—'));
     L.push('Objetivo: ' + (val('fPAObj') || '—'));
-    L.push(''); L.push('VII · EXPLORACIÓN FÍSICA');
+    L.push(''); L.push('EXPLORACIÓN FÍSICA');
     L.push('Signos vitales: ' + (val('fSignosVitales') || '—'));
     L.push(val('fEF') || '—');
-    L.push(''); L.push('VIII · ESTUDIOS');
-    L.push(attachedFiles.length ? attachedFiles.map(f => '• ' + f.name).join('\n') : 'Sin estudios adjuntos');
-    if (val('fEstudiosDesc')) L.push('Descripción: ' + val('fEstudiosDesc'));
-    L.push(''); L.push('IX · IMPRESIÓN DIAGNÓSTICA'); L.push(val('fDx') || '—');
-    L.push(''); L.push('X · PLAN DE TRATAMIENTO'); L.push(val('fPlan') || '—');
-    L.push(''); L.push('XI · PRONÓSTICO');
+    L.push(''); L.push('ESTUDIOS');
+    L.push(val('fEstudiosDesc') || '—');
+    L.push(''); L.push('IMPRESIÓN DIAGNÓSTICA'); L.push(val('fDx') || '—');
+    L.push(''); L.push('PLAN DE TRATAMIENTO'); L.push(val('fPlan') || '—');
+    L.push(''); L.push('PRONÓSTICO');
     L.push((val('fPronoCal') || '—') + (val('fPronoNotas') ? ' — ' + val('fPronoNotas') : ''));
     if (currentNotas.length){
-      L.push(''); L.push('XII · NOTAS DE SEGUIMIENTO');
+      L.push(''); L.push('NOTAS DE SEGUIMIENTO');
       currentNotas.slice().sort((a,b) => new Date(b.fecha) - new Date(a.fecha)).forEach(n => {
         L.push(new Date(n.fecha).toLocaleDateString('es-MX', {day:'2-digit', month:'short', year:'numeric'}) + ': ' + n.texto);
       });
