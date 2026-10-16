@@ -478,6 +478,7 @@
       <div class="card-body">
         <div class="field"><label>Nombre completo<span class="req">*</span></label><input type="text" id="fNombre" class="field-track" placeholder="Nombre del paciente" autocomplete="off"></div>
         <div class="field"><label>Enviado por</label><input type="text" id="fEnviadoPor" class="field-track" placeholder="Médico o institución que lo refiere" autocomplete="off"></div>
+        <div class="field"><label>Familiar</label><input type="text" id="fFamiliar" class="field-track" placeholder="Nombre de quien acompaña al paciente" autocomplete="off"></div>
         <div class="row2">
           <div class="field"><label>Fecha</label><input type="date" id="fFecha" class="field-track"></div>
           <div class="field"><label>Teléfono</label><input type="tel" id="fTelefono" class="field-track" placeholder="10 dígitos" autocomplete="off"></div>
@@ -594,13 +595,7 @@
       <summary><div class="title-block"><p class="eyebrow">PA</p><h2>Padecimiento actual</h2></div>
         <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
       <div class="card-body">
-        <div class="switch-row"><span class="lbl">Fiebre</span><label class="switch"><input type="checkbox" id="tFiebre" class="field-track" data-reveals="rFiebre"><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-text" id="tFiebreTxt">No</span></label></div>
-        <div class="reveal" id="rFiebre"><div class="field"><label>¿Cuánto?</label><input type="text" id="fFiebreDet" placeholder="Ej. 38.5 °C"></div></div>
-        <div class="divider"></div>
-        <div class="switch-row"><span class="lbl">Pérdida de peso</span><label class="switch"><input type="checkbox" id="tPeso" class="field-track" data-reveals="rPeso"><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-text" id="tPesoTxt">No</span></label></div>
-        <div class="reveal" id="rPeso"><div class="field"><label>¿Cuántos kilos?</label><input type="text" id="fPesoDet" placeholder="Ej. 5 kg en 3 meses"></div></div>
-        <div class="field"><label>Subjetivo</label><textarea id="fPA" class="field-track" placeholder="Lo que refiere el paciente…"></textarea></div>
-        <div class="field"><label>Objetivo</label><textarea id="fPAObj" class="field-track" placeholder="Lo que encuentro…"></textarea></div>
+        <div class="field"><textarea id="fPA" class="field-track" style="min-height:180px" placeholder="Redacción del padecimiento actual…"></textarea></div>
       </div>
     </details>
 
@@ -608,7 +603,6 @@
       <summary><div class="title-block"><p class="eyebrow">EF</p><h2>Exploración física</h2></div>
         <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
       <div class="card-body">
-        <div class="field"><label>Signos vitales</label><input type="text" id="fSignosVitales" class="field-track" placeholder="TA, FC, FR, Temp., SatO2…"></div>
         <div class="field"><label>Hallazgos</label><textarea id="fEF" class="field-track" placeholder="Exploración física, hallazgos relevantes…"></textarea></div>
       </div>
     </details>
@@ -805,8 +799,8 @@
   let saveTimer = null;
   const syncPill = document.getElementById('syncPill');
 
-  const TEXTLIKE_IDS = ['fNombre','fEnviadoPor','fFecha','fTelefono','fFechaNacimiento','fEdad','fGenero','fEdoCivil','fReligion','fNeoDet','fTabDet','fAlcDet','fDroDet','fLenaDet','fMastoEstado','fPapEstado','fAppOtro','fAlergDet','fCirugDet','fTransfDet','fFractDet','fInternDet','fFiebreDet','fPesoDet','fPAObj','fMenarca','fG','fP','fC','fA','fFUM','fHormTiempo','fMasto','fPap','fPA','fSignosVitales','fEF','fEstudiosDesc','fDx','fPlan','fPronoCal','fPronoNotas'];
-  const SWITCH_MAP = [['tNeo','rNeo'],['tTab','rTab'],['tAlc','rAlc'],['tDro','rDro'],['tLena','rLena'],['tDM',null],['tHTA',null],['tCard',null],['tHorm','rHorm'],['tLact',null],['tAlerg','rAlerg'],['tCirug','rCirug'],['tTransf','rTransf'],['tFract','rFract'],['tIntern','rIntern'],['tFiebre','rFiebre'],['tPeso','rPeso']];
+  const TEXTLIKE_IDS = ['fNombre','fEnviadoPor','fFamiliar','fFecha','fTelefono','fFechaNacimiento','fEdad','fGenero','fEdoCivil','fReligion','fNeoDet','fTabDet','fAlcDet','fDroDet','fLenaDet','fMastoEstado','fPapEstado','fAppOtro','fAlergDet','fCirugDet','fTransfDet','fFractDet','fInternDet','fMenarca','fG','fP','fC','fA','fFUM','fHormTiempo','fMasto','fPap','fPA','fEF','fEstudiosDesc','fDx','fPlan','fPronoCal','fPronoNotas'];
+  const SWITCH_MAP = [['tNeo','rNeo'],['tTab','rTab'],['tAlc','rAlc'],['tDro','rDro'],['tLena','rLena'],['tDM',null],['tHTA',null],['tCard',null],['tHorm','rHorm'],['tLact',null],['tAlerg','rAlerg'],['tCirug','rCirug'],['tTransf','rTransf'],['tFract','rFract'],['tIntern','rIntern']];
 
   const genero = document.getElementById('fGenero');
   const secAGO = document.getElementById('secAGO');
@@ -969,6 +963,13 @@
   }
   function applyFormData(data){
     TEXTLIKE_IDS.forEach(id => document.getElementById(id).value = (data[id] || ''));
+    // Campos que ya no existen: su contenido se pasa al texto libre para no perderlo.
+    const extraPA = [];
+    if (data.tFiebre && data.tFiebre.checked) extraPA.push('Fiebre: ' + (data.fFiebreDet || 'Sí'));
+    if (data.tPeso && data.tPeso.checked) extraPA.push('Pérdida de peso: ' + (data.fPesoDet || 'Sí'));
+    if (data.fPAObj) extraPA.push(data.fPAObj);
+    if (extraPA.length) document.getElementById('fPA').value = [data.fPA, extraPA.join('\n')].filter(Boolean).join('\n\n');
+    if (data.fSignosVitales) document.getElementById('fEF').value = 'Signos vitales: ' + data.fSignosVitales + (data.fEF ? '\n' + data.fEF : '');
     SWITCH_MAP.forEach(([id, revealId]) => {
       const el = document.getElementById(id);
       const st = data[id] || { checked:false, touched:false };
@@ -1271,18 +1272,19 @@
     L.push('FICHA DE IDENTIFICACIÓN');
     L.push('Nombre: ' + (val('fNombre') || '—'));
     if (val('fEnviadoPor')) L.push('Enviado por: ' + val('fEnviadoPor'));
+    if (val('fFamiliar')) L.push('Familiar: ' + val('fFamiliar'));
     L.push('Fecha: ' + (val('fFecha') || '—') + '   Teléfono: ' + (val('fTelefono') || '—'));
     L.push('Fecha de nacimiento: ' + (val('fFechaNacimiento') || '—'));
     L.push('Edad: ' + (val('fEdad') || '—') + '   Género: ' + (val('fGenero') || '—'));
     L.push('Estado civil: ' + (val('fEdoCivil') || '—') + '   Religión: ' + (val('fReligion') || '—')); L.push('');
-    L.push('AHF');
+    L.push('ANTECEDENTES HEREDOFAMILIARES');
     L.push('Neoplásicos: ' + yn('tNeo') + (document.getElementById('tNeo').checked && val('fNeoDet') ? ' — ' + val('fNeoDet') : '')); L.push('');
-    L.push('APNP');
+    L.push('ANTECEDENTES PERSONALES NO PATOLÓGICOS');
     L.push('Tabaquismo: ' + yn('tTab') + (document.getElementById('tTab').checked && val('fTabDet') ? ' — ' + val('fTabDet') : ''));
     L.push('Alcoholismo: ' + yn('tAlc') + (document.getElementById('tAlc').checked && val('fAlcDet') ? ' — ' + val('fAlcDet') : ''));
     L.push('Drogas: ' + yn('tDro') + (document.getElementById('tDro').checked && val('fDroDet') ? ' — ' + val('fDroDet') : ''));
     L.push('Exposición a humo de leña: ' + ynd('tLena','fLenaDet')); L.push('');
-    L.push('APP');
+    L.push('ANTECEDENTES PERSONALES PATOLÓGICOS');
     L.push('Diabetes: ' + yn('tDM') + '   Hipertensión: ' + yn('tHTA') + '   Cardiopatías: ' + yn('tCard'));
     L.push('Alergias: ' + ynd('tAlerg','fAlergDet'));
     L.push('Cirugías: ' + ynd('tCirug','fCirugDet'));
@@ -1291,7 +1293,7 @@
     L.push('Internamientos: ' + ynd('tIntern','fInternDet'));
     if (val('fAppOtro')) L.push('Otro: ' + val('fAppOtro'));
     if (genero.value === 'Femenino'){
-      L.push(''); L.push('AGO');
+      L.push(''); L.push('ANTECEDENTES GINECO-OBSTÉTRICOS');
       L.push('Menarca: ' + (val('fMenarca') || '—') + '   G:' + (val('fG')||'0') + ' P:' + (val('fP')||'0') + ' C:' + (val('fC')||'0') + ' A:' + (val('fA')||'0'));
       L.push('FUM: ' + (val('fFUM') || '—'));
       L.push('Hormonales: ' + yn('tHorm') + (document.getElementById('tHorm').checked && val('fHormTiempo') ? ' — ' + val('fHormTiempo') : ''));
@@ -1299,11 +1301,8 @@
       L.push('Lactancia: ' + yn('tLact'));
     }
     L.push(''); L.push('PADECIMIENTO ACTUAL');
-    L.push('Fiebre: ' + ynd('tFiebre','fFiebreDet') + '   Pérdida de peso: ' + ynd('tPeso','fPesoDet'));
-    L.push('Subjetivo: ' + (val('fPA') || '—'));
-    L.push('Objetivo: ' + (val('fPAObj') || '—'));
+    L.push(val('fPA') || '—');
     L.push(''); L.push('EXPLORACIÓN FÍSICA');
-    L.push('Signos vitales: ' + (val('fSignosVitales') || '—'));
     L.push(val('fEF') || '—');
     L.push(''); L.push('ESTUDIOS');
     L.push(val('fEstudiosDesc') || '—');
@@ -1341,6 +1340,7 @@
         '<div class="print-meta-block">' +
           '<p class="print-meta-line print-meta-name">' + escapeHtml(val('fNombre') || 'Paciente sin nombre') + '</p>' +
           (val('fEnviadoPor') ? '<p class="print-meta-line">Enviado por: ' + escapeHtml(val('fEnviadoPor')) + '</p>' : '') +
+          (val('fFamiliar') ? '<p class="print-meta-line">Familiar: ' + escapeHtml(val('fFamiliar')) + '</p>' : '') +
           '<p class="print-meta-line">Fecha de nacimiento: ' + escapeHtml(fechaNac) + '</p>' +
           '<p class="print-meta-line">Tel\u00e9fono: ' + escapeHtml(tel) + '</p>' +
         '</div>' +
